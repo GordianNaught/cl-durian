@@ -150,7 +150,7 @@
                         (let ((*print-case* (if *force-tags-lowercase*
                                                 :downcase
                                                 *print-case*)))
-                          (format out "</~a>" (car given))))
+                          (format out "</~a>~%" (car given))))
                      (otherwise (error "list of unhandled length in cl-durian:html"))))
            (format out (html-escape (format nil "~a" given))))))
       (inner given 0))))
