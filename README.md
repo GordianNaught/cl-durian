@@ -39,7 +39,7 @@ This is meant to allow a way to avoid escaping if you are to want to insert CSS 
 # Dictionary
 ### html
 `html' takes a list structure and creates a formatted html string. This is the main function of cl-durian.
-### *force-tags-lowercase*
+### \*force-tags-lowercase\*
 defaults to *t* (true)
 
 This forces all tags to lowercase. It can be changed, but it defaults to *t* for convenience as symbols are naturally read in all caps by the lisp reader.
