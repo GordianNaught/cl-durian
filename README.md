@@ -11,6 +11,7 @@ cl-durian creates human legible, indented HTML from simple list structures.
     </b>
 </html>
 "
+```
 # Dictionary
 ### html
 `html' takes a list structure and creates a formatted html string. This is the main function of cl-durian.
