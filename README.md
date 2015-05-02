@@ -28,7 +28,7 @@ Note that this is detected by the outer list having a length of 3. If you would 
 ```
 The *script* symbol from the cl-durian package is used to denote a script, and thus the text within these tags will not be escaped as other html text is.
 ```
-(cl-durian:html `(script ((type "text/javascript")) "var j = 10;"))
+(cl-durian:html `(cl-durian:script ((type "text/javascript")) "var j = 10;"))
 
 "<script TYPE=\"text/javascript\">var j = 10;</script>"
 ```
