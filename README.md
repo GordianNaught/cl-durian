@@ -4,7 +4,7 @@ cl-durian creates human legible, indented HTML from simple list structures.
 (cl-durian:html `(html ((h1 "This is the title") (b ((p "line1")(p "line2"))))))
 
 "<html>
-    <h1>This&rlm;is&rlm;the&rlm;title</h1>
+    <h1>This&nbsp;is&nbsp;the&nbsp;title</h1>
     <b>
         <p>line1</p>
         <p>line2</p>
