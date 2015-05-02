@@ -16,8 +16,8 @@ cl-durian creates human legible, indented HTML from simple list structures.
 ### html
 `html' takes a list structure and creates a formatted html string. This is the main function of cl-durian.
 ### *force-tags-lowercase*
-defaults to `t' (true)
-This forces all tags to lowercase. It can be changed, but it defaults to `t' for convenience as symbols are naturally read in all caps by the lisp reader.
+defaults to *t* (true)
+This forces all tags to lowercase. It can be changed, but it defaults to *t* for convenience as symbols are naturally read in all caps by the lisp reader.
 ### html-escape
 escapes a string for use in html (not generally needed, cl-durian handles the escaping of strings automatically).
 ### script
