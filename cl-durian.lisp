@@ -15,7 +15,7 @@
 (,(aref ">" 0) "gt")(,(aref " " 0) "nbsp")(,(aref "¡" 0) "iexcl")(,(aref "¢" 0) "cent")
 (,(aref "£" 0) "pound")(,(aref "¤" 0) "curren")(,(aref "¥" 0) "yen")(,(aref "¦" 0) "brvbar")
 (,(aref "§" 0) "sect")(,(aref "¨" 0) "uml")(,(aref "©" 0) "copy")(,(aref "ª" 0) "ordf")
-(,(aref "«" 0) "laquo")(,(aref "¬" 0) "not")(,(aref " " 0) "shy")(,(aref "®" 0) "reg")
+(,(aref "«" 0) "laquo")(,(aref "¬" 0) "not")(,(code-char 173) "shy")(,(aref "®" 0) "reg")
 (,(aref "¯" 0) "macr")(,(aref "°" 0) "deg")(,(aref "±" 0) "plusmn")(,(aref "²" 0) "sup2")
 (,(aref "³" 0) "sup3")(,(aref "´" 0) "acute")(,(aref "µ" 0) "micro")(,(aref "¶" 0) "para")
 (,(aref "·" 0) "middot")(,(aref "¸" 0) "cedil")(,(aref "¹" 0) "sup1")(,(aref "º" 0) "ordm")
@@ -51,8 +51,8 @@
 (,(aref "π" 0) "pi")(,(aref "ρ" 0) "rho")(,(aref "ς" 0) "sigmaf")(,(aref "σ" 0) "sigma")
 (,(aref "τ" 0) "tau")(,(aref "υ" 0) "upsilon")(,(aref "φ" 0) "phi")(,(aref "χ" 0) "chi")
 (,(aref "ψ" 0) "psi")(,(aref "ω" 0) "omega")(,(aref "ϑ" 0) "thetasym")(,(aref "ϒ" 0) "upsih")
-(,(aref "ϖ" 0) "piv")(,(aref " " 0) "ensp")(,(aref " " 0) "emsp")(,(aref " " 0) "thinsp")
-(,(aref " " 0) "zwnj")(,(aref " " 0) "zwj")(,(aref " " 0) "lrm")(,(aref " " 0) "rlm")
+(,(aref "ϖ" 0) "piv")(,(code-char 8194) "ensp")(,(code-char 8195) "emsp")(,(code-char 8201) "thinsp")
+(,(code-char 8204) "zwnj")(,(code-char 8205) "zwj")(,(code-char 8206) "lrm")(,(code-char 8207) "rlm")
 (,(aref "–" 0) "ndash")(,(aref "—" 0) "mdash")(,(aref "‘" 0) "lsquo")(,(aref "’" 0) "rsquo")
 (,(aref "‚" 0) "sbquo")(,(aref "“" 0) "ldquo")(,(aref "”" 0) "rdquo")(,(aref "„" 0) "bdquo")
 (,(aref "†" 0) "dagger")(,(aref "‡" 0) "Dagger")(,(aref "•" 0) "bull")(,(aref "…" 0) "hellip")
@@ -125,8 +125,7 @@
                                                     :downcase
                                                     *print-case*)))
                               (format out "</~a>~%" (car given))))))
-                     (3 
-                     (dotimes (d (* 4 depth)) (write-char #\Sp out))
+                     (3 (dotimes (d (* 4 depth)) (write-char #\Sp out))
                         (let ((*print-case* (if *force-tags-lowercase*
                                                 :downcase
                                                 *print-case*)))
@@ -134,6 +133,7 @@
                         (format out "~{ ~{~a=\"~a\"~}~}" (cadr given))
                         (if (and (listp (caddr given)) (listp (caaddr given)))
                           (progn
+                            (write-char #\> out)
                             (format out "~%")
                             (map 'nil (lambda (x) (inner x (+ 1 depth))) (caddr given))
                             (dotimes (d (* 4 depth)) (write-char #\Sp out)))
@@ -150,6 +150,7 @@
                         (let ((*print-case* (if *force-tags-lowercase*
                                                 :downcase
                                                 *print-case*)))
-                          (format out "</~a>" (car given))))))
+                          (format out "</~a>" (car given))))
+                     (otherwise (error "list of unhandled length in cl-durian:html"))))
            (format out (html-escape (format nil "~a" given))))))
       (inner given 0))))
