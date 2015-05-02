@@ -53,7 +53,7 @@ Functions that return list structures can be used to help abstract. They can the
 
 *when* and list splicing can be used to conditionally add things into the html list structure.
 ```
-(cl-durian `(html ,@(when user-identified `(,(user-banner session-value)))))
+(cl-durian:html `(html ,@(when user-identified `(,(user-banner session-value)))))
 ```
 Functions that edit or wrap other list structures can also be used to great effect.
 # Dictionary
