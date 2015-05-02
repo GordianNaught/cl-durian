@@ -36,6 +36,26 @@ The *raw* symbol from the cl-durian package is used to denote text that is note 
 
 This is meant to allow a way to avoid escaping if you are to want to insert CSS or HTML from another file without causing it to be escaped again.
 
+List structures with the backtick are used to allow for interpolation.
+```
+(let ((name "George"))
+  (cl-durian:html `(html ((h1 "NAME") (b (p ,name))))))
+
+"<html>
+    <h1>NAME</h1>
+    <b>
+        <p>George</p>
+    </b>
+</html>
+"
+```
+Functions that return list structures can be used to help abstract. They can then be called within other list structures.
+
+*when* and list splicing can be used to conditionally add things into the html list structure.
+```
+(cl-durian `(html ,@(when user-identified `(,(user-banner session-value)))))
+```
+Functions that edit or wrap other list structures can also be used to great effect.
 # Dictionary
 ### html
 `html' takes a list structure and creates a formatted html string. This is the main function of cl-durian.
