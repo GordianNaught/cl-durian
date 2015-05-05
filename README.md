@@ -2,14 +2,14 @@
 cl-durian creates human legible, indented HTML from simple list structures.
 
 ```
-(cl-durian:html `(html ((h1 "This is the title") (b ((p "line1")(p "line2"))))))
+(cl-durian:html `(html ((h1 "This is the title") (body ((p "line1")(p "line2"))))))
 
 "<html>
     <h1>This&nbsp;is&nbsp;the&nbsp;title</h1>
-    <b>
+    <body>
         <p>line1</p>
         <p>line2</p>
-    </b>
+    </body>
 </html>
 "
 ```
@@ -39,13 +39,13 @@ This is meant to allow a way to avoid escaping if you are to want to insert CSS 
 List structures with the backtick are used to allow for interpolation.
 ```
 (let ((name "George"))
-  (cl-durian:html `(html ((h1 "NAME") (b (p ,name))))))
+  (cl-durian:html `(html ((h1 "NAME") (body (p ,name))))))
 
 "<html>
     <h1>NAME</h1>
-    <b>
+    <body>
         <p>George</p>
-    </b>
+    </body>
 </html>
 "
 ```
