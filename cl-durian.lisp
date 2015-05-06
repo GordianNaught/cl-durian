@@ -94,63 +94,69 @@
     (labels
       ((inner (given depth)
          (if (listp given)
-           (let ((l (length given)))
-             (case l (1 (dotimes (d (* 4 depth)) (write-char #\Sp out))
-                        (let ((*print-case* (if *force-tags-lowercase*
-                                                :downcase
-                                                *print-case*)))
-                          (format out "<~a></~a>~%" (car given) (car given))))
-                     (2 (if (eq (car given) 'raw)
-                          (format out "~a" (cadr given))
-                          (progn
-                            (dotimes (d (* 4 depth)) (write-char #\Sp out))
-                            (let ((*print-case* (if *force-tags-lowercase*
-                                                    :downcase
-                                                    *print-case*)))
-                              (format out "<~a>" (car given)))
-                            (if (and (listp (cadr given)) (listp (caadr given)))
-                              (progn
-                                (format out "~%")
-                                (map 'nil (lambda (x) (inner x (+ 1 depth))) (cadr given))
-                                (dotimes (d (* 4 depth)) (write-char #\Sp out)))
-                              (if (member (car given) '(script))
-                                (format out "~a" (cadr given))
-                                (if (listp (cadr given))
-                                  (progn
-                                    (format out "~%")
-                                    (inner (cadr given) (+ 1 depth))
-                                    (dotimes (d (* 4 depth)) (write-char #\Sp out)))
-                                  (inner (cadr given) (+ 1 depth)))))
-                            (let ((*print-case* (if *force-tags-lowercase*
-                                                    :downcase
-                                                    *print-case*)))
-                              (format out "</~a>~%" (car given))))))
-                     (3 (dotimes (d (* 4 depth)) (write-char #\Sp out))
-                        (let ((*print-case* (if *force-tags-lowercase*
-                                                :downcase
-                                                *print-case*)))
-                          (format out "<~a" (car given)))
-                        (format out "~{ ~{~a=\"~a\"~}~}" (cadr given))
-                        (if (and (listp (caddr given)) (listp (caaddr given)))
-                          (progn
-                            (write-char #\> out)
-                            (format out "~%")
-                            (map 'nil (lambda (x) (inner x (+ 1 depth))) (caddr given))
-                            (dotimes (d (* 4 depth)) (write-char #\Sp out)))
-                          (progn
-                            (write-char #\> out)
-                            (if (member (car given) '(script))
-                              (format out "~a" (caddr given))
-                              (if (listp (caddr given))
+           (if (symbolp (car given))
+             (let ((l (length given)))
+               (case l (1 ;(dotimes (d (* 4 depth)) (write-char #\Sp out)))
+                          (let ((*print-case* (if *force-tags-lowercase*
+                                                  :downcase
+                                                  *print-case*)))
+                            (format out "<~a></~a>" (car given) (car given))))
+                       (2 (if (eq (car given) 'raw)
+                            (format out "~a" (cadr given))
+                            (progn
+                              ;(dotimes (d (* 4 depth)) (write-char #\Sp out))
+                              (let ((*print-case* (if *force-tags-lowercase*
+                                                      :downcase
+                                                      *print-case*)))
+                                (format out "<~a>" (car given)))
+                              (if (and (listp (cadr given))
+                                       (or (listp (caadr given))
+                                           (stringp (caadr given))))
                                 (progn
-                                  (format out "~%")
-                                  (inner (caddr given) (+ 1 depth))
-                                  (dotimes (d (* 4 depth)) (write-char #\Sp out)))
-                                (inner (caddr given) (+ 1 depth))))))
-                        (let ((*print-case* (if *force-tags-lowercase*
-                                                :downcase
-                                                *print-case*)))
-                          (format out "</~a>~%" (car given))))
-                     (otherwise (error "list of unhandled length in cl-durian:html"))))
+                                  ;(format out "~%")
+                                  (map 'nil (lambda (x) (inner x (+ 1 depth))) (cadr given)))
+                                  ;(dotimes (d (* 4 depth)) (write-char #\Sp out)))
+                                (if (member (car given) '(script))
+                                  (format out "~a" (cadr given))
+                                  (if (listp (cadr given))
+                                    (progn
+                                      ;(format out "~%")
+                                      (inner (cadr given) (+ 1 depth)))
+                                      ;(dotimes (d (* 4 depth)) (write-char #\Sp out)))
+                                    (inner (cadr given) (+ 1 depth)))))
+                              (let ((*print-case* (if *force-tags-lowercase*
+                                                      :downcase
+                                                      *print-case*)))
+                                (format out "</~a>" (car given))))))
+                       (3 ;(dotimes (d (* 4 depth)) (write-char #\Sp out))
+                          (let ((*print-case* (if *force-tags-lowercase*
+                                                  :downcase
+                                                  *print-case*)))
+                            (format out "<~a" (car given)))
+                          (format out "~{ ~{~a=\"~a\"~}~}" (cadr given))
+                          (if (and (listp (caddr given))
+                                   (or (listp (caaddr given))
+                                       (stringp (caaddr given))))
+                            (progn
+                              (write-char #\> out)
+                              ;(format out "~%")
+                              (map 'nil (lambda (x) (inner x (+ 1 depth))) (caddr given)))
+                              ;(dotimes (d (* 4 depth)) (write-char #\Sp out))
+                            (progn
+                              (write-char #\> out)
+                              (if (member (car given) '(script))
+                                (format out "~a" (caddr given))
+                                (if (listp (caddr given))
+                                  (progn
+                                    ;(format out "~%")
+                                    (inner (caddr given) (+ 1 depth)))
+                                    ;(dotimes (d (* 4 depth)) (write-char #\Sp out))))
+                                  (inner (caddr given) (+ 1 depth))))))
+                          (let ((*print-case* (if *force-tags-lowercase*
+                                                  :downcase
+                                                  *print-case*)))
+                            (format out "</~a>" (car given))))
+                       (otherwise (error "list of unhandled length in cl-durian:html"))))
+             (map 'nil (lambda (x) (inner x (+ 1 depth))) given))
            (format out (html-escape (format nil "~a" given))))))
       (inner given 0))))
